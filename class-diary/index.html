@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Електронний щоденник 5-Б</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>📚 Щоденник 5-Б класу</h1>
+            <div class="controls">
+                <button id="prevWeek" class="nav-btn">← Попередній</button>
+                <span id="dateRange">...</span>
+                <button id="nextWeek" class="nav-btn">Наступний →</button>
+            </div>
+            <div class="header-right">
+                <span id="saveIndicator" class="save-indicator hidden">✓ Збережено</span>
+                <button id="editModeBtn" class="edit-btn">🔒 Режим редагування</button>
+            </div>
+        </header>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 35%">День / Уроки</th>
+                        <th style="width: 65%">Домашнє завдання</th>
+                    </tr>
+                </thead>
+                <tbody id="diaryBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>🔑 Вхід для старости</h3>
+            <input type="text" id="loginInput" placeholder="Логін" autocomplete="username">
+            <input type="password" id="passwordInput" placeholder="Пароль" autocomplete="current-password">
+            <div class="modal-buttons">
+                <button id="loginConfirmBtn" class="primary-btn">Увійти</button>
+                <button id="loginCancelBtn" class="secondary-btn">Скасувати</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -306,6 +306,20 @@ button {
     background: #138496;
 }
 
+.transfer-btn {
+    background: #ffc107;
+    color: #333;
+    font-size: 11px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    font-weight: 600;
+    height: fit-content;
+}
+
+.transfer-btn:hover {
+    background: #ffb300;
+}
+
 .homework-item {
     margin-bottom: 12px;
     padding-bottom: 10px;

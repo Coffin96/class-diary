@@ -12,7 +12,7 @@ const firebaseConfig = {
 
 // --- КОНСТАНТИ ---
 const ADMIN_LOGIN = 'starosta';
-const ADMIN_PASSWORD = 'class1234';
+const ADMIN_PASSWORD = 'class123';
 const DAYS_MAP = {
     monday: 'Понеділок',
     tuesday: 'Вівторок',
@@ -534,4 +534,5 @@ function escapeHtml(text) {
 
 // --- ЗАПУСК ---
 init();
+
 

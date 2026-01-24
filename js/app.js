@@ -133,8 +133,23 @@ function init() {
     }
 
     // Завантаження розкладу
-    db.ref('schedule').on('value', (snapshot) => {
-        scheduleData = snapshot.val() || getDefaultSchedule();
+    db.ref('schedule').once('value', (snapshot) => {
+        if (!snapshot.exists()) {
+            // Перший запуск - записуємо дефолтний розклад
+            const defaultSchedule = getDefaultSchedule();
+            db.ref('schedule').set(defaultSchedule);
+            scheduleData = defaultSchedule;
+        } else {
+            scheduleData = snapshot.val();
+        }
+        
+        // Тепер слухаємо зміни
+        db.ref('schedule').on('value', (snap) => {
+            scheduleData = snap.val() || scheduleData;
+            saveToLocal();
+            renderDiary();
+        });
+        
         saveToLocal();
         renderDiary();
     }, (error) => {
@@ -167,11 +182,11 @@ function loadHomeworkForWeeks() {
 
 function getDefaultSchedule() {
     return {
-        monday: ['Математика', 'Українська мова', 'Англійська'],
-        tuesday: ['Фізика', 'Історія', 'Інформатика'],
-        wednesday: ['Хімія', 'Біологія', 'Література'],
-        thursday: ['Географія', 'Мистецтво', 'Фізкультура'],
-        friday: ['Трудове навчання', 'Основи здоров\'я', 'Математика']
+        monday: ['Фізкультура', 'Українська мова', 'Українська мова', 'Математика', 'Математика'],
+        tuesday: ['Українська мова', 'Українська мова', 'Фізкультура', 'Математика', 'Природа', 'Технології'],
+        wednesday: ['Історія', 'Історія', 'Мистецтво', 'Здоров\'я безпека добробут', 'Англійська мова', 'Англійська мова'],
+        thursday: ['Українська література', 'Математика', 'Математика', 'Англійська мова', 'Англійська мова', 'Фізкультура'],
+        friday: ['Українська література', 'Природа', 'Зарубіжна література', 'Інформатика']
     };
 }
 
@@ -251,10 +266,16 @@ function renderDiary() {
             hwDiv.className = 'homework-item';
 
             if (isEditMode) {
+                const transferBtn = taskText ? `<button class="transfer-btn" onclick="transferHomework('${dateStr}', ${i}, '${escapeHtml(lesson)}')">→ Наступний</button>` : '';
                 hwDiv.innerHTML = `
                     <div class="homework-label">${escapeHtml(lesson)}:</div>
-                    <textarea onchange="saveHomework('${dateStr}', ${i}, '${escapeHtml(lesson)}', this.value)" 
-                              placeholder="Введіть домашнє завдання...">${escapeHtml(taskText)}</textarea>
+                    <div style="display: flex; gap: 5px; align-items: start;">
+                        <textarea onchange="saveHomework('${dateStr}', ${i}, this.dataset.subject, this.value)" 
+                                  data-subject="${escapeHtml(lesson)}"
+                                  placeholder="Введіть домашнє завдання..."
+                                  style="flex: 1; margin-bottom: 0;">${escapeHtml(taskText)}</textarea>
+                        ${transferBtn}
+                    </div>
                 `;
             } else {
                 hwDiv.innerHTML = `
@@ -398,6 +419,69 @@ window.saveHomework = function(dateStr, index, subject, newVal) {
         homeworkData[dateStr] = tasks;
         saveToLocal();
         renderDiary();
+    }
+};
+
+window.transferHomework = function(currentDateStr, currentIndex, subject) {
+    const currentTask = (homeworkData[currentDateStr] || [])[currentIndex];
+    if (!currentTask || !currentTask.task) {
+        alert('Немає завдання для переносу');
+        return;
+    }
+    
+    // Знаходимо наступний урок з такою ж назвою
+    const currentDate = new Date(currentDateStr);
+    let found = false;
+    
+    // Шукаємо протягом 30 днів
+    for (let dayOffset = 1; dayOffset <= 30 && !found; dayOffset++) {
+        const nextDate = addDays(currentDate, dayOffset);
+        const nextDateStr = formatDate(nextDate);
+        const dayOfWeek = nextDate.getDay();
+        
+        // Пропускаємо вихідні
+        if (dayOfWeek === 0 || dayOfWeek === 6) continue;
+        
+        // Визначаємо день тижня
+        const dayKey = DAYS_KEYS[dayOfWeek - 1];
+        const lessons = scheduleData[dayKey] || [];
+        
+        // Шукаємо урок з такою ж назвою
+        for (let i = 0; i < lessons.length; i++) {
+            if (lessons[i] === subject) {
+                // Знайшли! Переносимо завдання
+                let tasks = [...(homeworkData[nextDateStr] || [])];
+                
+                while(tasks.length <= i) {
+                    tasks.push({ subject: '', task: '' });
+                }
+                
+                tasks[i] = {
+                    subject: subject,
+                    task: currentTask.task
+                };
+                
+                // Зберігаємо нове завдання
+                if (firebaseInitialized) {
+                    db.ref('homework/' + nextDateStr).set(tasks);
+                } else {
+                    homeworkData[nextDateStr] = tasks;
+                    saveToLocal();
+                }
+                
+                // Очищаємо поточне завдання
+                window.saveHomework(currentDateStr, currentIndex, subject, '');
+                
+                const nextDateDisplay = formatDateDisplay(nextDate);
+                alert(`✓ Завдання перенесено на ${DAYS_MAP[dayKey]} (${nextDateDisplay})`);
+                found = true;
+                break;
+            }
+        }
+    }
+    
+    if (!found) {
+        alert('Не знайдено наступного уроку "' + subject + '" протягом місяця');
     }
 };
 

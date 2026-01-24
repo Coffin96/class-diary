@@ -68,7 +68,7 @@ header h1 {
 }
 
 .save-indicator.hidden {
-    display: none;
+    display: none !important;
 }
 
 @keyframes fadeIn {
@@ -228,7 +228,7 @@ button {
 }
 
 .modal.hidden {
-    display: none;
+    display: none !important;
 }
 
 .modal-content {

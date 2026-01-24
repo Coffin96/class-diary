@@ -107,8 +107,13 @@ function init() {
     document.getElementById('nextWeek').onclick = () => changeWeek(7);
     document.getElementById('editModeBtn').onclick = toggleEditMode;
     document.getElementById('loginConfirmBtn').onclick = checkLogin;
-    document.getElementById('loginCancelBtn').onclick = () => {
-        document.getElementById('loginModal').classList.add('hidden');
+    document.getElementById('loginCancelBtn').onclick = closeModal;
+    
+    // Закриття при кліку поза вікном
+    document.getElementById('loginModal').onclick = (e) => {
+        if (e.target.id === 'loginModal') {
+            closeModal();
+        }
     };
 
     // Enter у модальному вікні

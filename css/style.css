@@ -213,10 +213,6 @@ button {
 }
 
 /* Модальне вікно */
-.hidden {
-    display: none;
-}
-
 .modal {
     position: fixed;
     top: 0;
@@ -229,6 +225,10 @@ button {
     align-items: center;
     z-index: 1000;
     animation: fadeIn 0.2s;
+}
+
+.modal.hidden {
+    display: none;
 }
 
 .modal-content {

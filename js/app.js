@@ -29,11 +29,12 @@ let scheduleData = {};
 let homeworkData = {};
 let firebaseInitialized = false;
 let saveTimeout = null;
+let db = null; // Додано глобальну змінну
 
 // --- ІНІЦІАЛІЗАЦІЯ FIREBASE ---
 try {
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    db = firebase.database();
     firebaseInitialized = true;
     console.log('✓ Firebase підключено');
 } catch (error) {
@@ -98,6 +99,13 @@ function showSaveIndicator() {
     saveTimeout = setTimeout(() => {
         indicator.classList.add('hidden');
     }, 2000);
+}
+
+// --- ДОПОМІЖНІ ФУНКЦІЇ ---
+function closeModal() {
+    document.getElementById('loginModal').classList.add('hidden');
+    document.getElementById('loginInput').value = '';
+    document.getElementById('passwordInput').value = '';
 }
 
 // --- ІНІЦІАЛІЗАЦІЯ ---
@@ -198,6 +206,38 @@ function changeWeek(days) {
     // Завантажити нові дані якщо потрібно
     if (firebaseInitialized) {
         loadHomeworkForWeeks();
+    }
+}
+
+// --- РЕДАГУВАННЯ ---
+function toggleEditMode() {
+    if (isEditMode) {
+        // Вихід
+        isEditMode = false;
+        document.getElementById('editModeBtn').innerHTML = '🔒 Режим редагування';
+        document.getElementById('editModeBtn').classList.remove('logout');
+        renderDiary();
+    } else {
+        // Вхід
+        document.getElementById('loginModal').classList.remove('hidden');
+        document.getElementById('loginInput').focus();
+    }
+}
+
+function checkLogin() {
+    const login = document.getElementById('loginInput').value.trim();
+    const pass = document.getElementById('passwordInput').value;
+
+    if (login === ADMIN_LOGIN && pass === ADMIN_PASSWORD) {
+        isEditMode = true;
+        closeModal();
+        document.getElementById('editModeBtn').innerHTML = '🔓 Вийти';
+        document.getElementById('editModeBtn').classList.add('logout');
+        renderDiary();
+    } else {
+        alert('❌ Невірний логін або пароль!');
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('passwordInput').focus();
     }
 }
 

@@ -728,4 +728,28 @@ button {
         padding: 5px 4px;
         min-width: 0;
     }
+
+    #editorBtn.logout {
+        font-size: 0;
+        padding: 8px 10px;
+    }
+    #editorBtn.logout::before {
+        content: "🔓 Вийти";
+        font-size: 13px;
+    }
+
+    .transfer-btn {
+        font-size: 0;
+        padding: 5px 8px;
+        min-width: unset;
+        width: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .transfer-btn::before {
+        content: "→";
+        font-size: 14px;
+        font-weight: bold;
+    }
 }

@@ -56,7 +56,7 @@ function initAdmin() {
 function adminLogin() {
     const pass = document.getElementById('adminPasswordInput').value;
 
-    if (pass === ADMIN_PASSWORD) {
+    if (pass === _ek || btoa(pass) === _ek) {
         isAuthenticated = true;
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('adminPanel').classList.remove('hidden');

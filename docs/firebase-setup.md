@@ -111,7 +111,7 @@ const firebaseConfig = {
 Відкрийте файл `js/admin-credentials.js` та змініть пароль:
 
 ```javascript
-const ADMIN_PASSWORD = 'ваш_новий_пароль';
+const _ek = 'ваш_новий_пароль';
 ```
 
 > Цей пароль потрібен для входу в адмін-панель (`admin.html`).

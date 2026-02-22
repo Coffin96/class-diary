@@ -54,7 +54,7 @@ class-diary/
 ### Пароль адміністратора
 Файл `js/admin-credentials.js`:
 ```javascript
-const ADMIN_PASSWORD = 'ваш_пароль';
+const _ek = 'ваш_пароль';
 ```
 
 ### Конфігурація Firebase

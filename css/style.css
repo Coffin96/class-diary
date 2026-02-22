@@ -567,6 +567,9 @@ button {
 .today-modal-content {
     max-width: 500px;
     width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 20px;
 }
 
 .today-form-field {
@@ -733,6 +736,7 @@ button {
         font-size: 0;
         padding: 8px 10px;
     }
+
     #editorBtn.logout::before {
         content: "🔓 Вийти";
         font-size: 13px;
@@ -747,6 +751,7 @@ button {
         justify-content: center;
         align-items: center;
     }
+
     .transfer-btn::before {
         content: "→";
         font-size: 14px;

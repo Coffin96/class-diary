@@ -831,10 +831,8 @@ window.openTodayHomework = function () {
     // Перевірка: якщо сьогодні субота або неділя — беремо п'ятницю
     if (currentDay === 0) { // Неділя
         targetDate = addDays(targetDate, -2);
-        alert('ℹ️ Сьогодні неділя. Відкриваємо уроки за п\'ятницю.');
     } else if (currentDay === 6) { // Субота
         targetDate = addDays(targetDate, -1);
-        alert('ℹ️ Сьогодні субота. Відкриваємо уроки за п\'ятницю.');
     }
 
     const todayStr = formatDate(targetDate);

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Панель адміністратора — налаштування електронного щоденника">
+    <title>Адмін-панель</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/admin-credentials.js"></script>
+</head>
+
+<body>
+
+    <!-- Екран входу -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <div class="login-icon">⚙️</div>
+            <h2>Панель адміністратора</h2>
+            <p>Введіть пароль для доступу</p>
+            <input type="password" id="adminPasswordInput" placeholder="Пароль адміністратора"
+                autocomplete="current-password">
+            <button id="adminLoginBtn" class="btn btn-primary">Увійти</button>
+            <a href="index.html" class="back-link">← Повернутися до щоденника</a>
+        </div>
+    </div>
+
+    <!-- Панель адміністратора -->
+    <div id="adminPanel" class="admin-panel hidden">
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <span class="admin-logo">⚙️</span>
+                <h1>Панель адміністратора</h1>
+            </div>
+            <div class="admin-header-right">
+                <span id="adminSaveIndicator" class="save-indicator hidden">✓ Збережено</span>
+                <a href="index.html" class="btn btn-outline">← Щоденник</a>
+                <button id="adminLogoutBtn" class="btn btn-danger">Вийти</button>
+            </div>
+        </header>
+
+        <main class="admin-content">
+            <!-- Основні налаштування -->
+            <section class="admin-section">
+                <div class="section-header">
+                    <h2>📋 Основні налаштування</h2>
+                </div>
+                <div class="section-body">
+                    <div class="form-group">
+                        <label for="classNameInput">Назва класу</label>
+                        <input type="text" id="classNameInput" placeholder="Наприклад: Щоденник 5-Б класу">
+                        <small>Відображається у заголовку сторінки щоденника</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="schoolNameInput">Назва школи</label>
+                        <input type="text" id="schoolNameInput" placeholder="Наприклад: КЗ «СЗШ №1» м. Києва">
+                        <small>Відображається внизу сторінки щоденника</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Паролі -->
+            <section class="admin-section">
+                <div class="section-header">
+                    <h2>🔑 Пароль редактора</h2>
+                </div>
+                <div class="section-body">
+                    <div class="form-group">
+                        <label for="editorPasswordInput">Пароль для режиму редагування</label>
+                        <div class="password-group">
+                            <input type="text" id="editorPasswordInput" placeholder="Введіть пароль для редактора">
+                        </div>
+                        <small>Цей пароль використовують старости та вчителі для заповнення розкладу</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Базовий розклад -->
+            <section class="admin-section">
+                <div class="section-header">
+                    <h2>📅 Базовий розклад (автозаповнення)</h2>
+                </div>
+                <div class="section-body">
+                    <p class="section-description">Цей розклад використовується для автоматичного заповнення при
+                        створенні нового тижня.</p>
+                    <div id="defaultScheduleEditor"></div>
+                </div>
+            </section>
+
+            <!-- Інформація -->
+            <section class="admin-section">
+                <div class="section-header">
+                    <h2>ℹ️ Технічна інформація</h2>
+                </div>
+                <div class="section-body">
+                    <p class="section-description">
+                        Підключення до Firebase налаштовується у файлі <code>js/firebase-config.js</code>.<br>
+                        Пароль адміністратора — у файлі <code>js/admin-credentials.js</code>.<br>
+                        Для зміни цих параметрів відредагуйте відповідні файли та перезавантажте сторінку.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Обслуговування -->
+            <section class="admin-section">
+                <div class="section-header">
+                    <h2>🗑 Обслуговування бази даних</h2>
+                </div>
+                <div class="section-body">
+                    <p class="section-description">
+                        Видалення старих записів розкладу та домашніх завдань для економії місця в базі даних.
+                    </p>
+                    <div class="form-group">
+                        <label for="cleanupPeriod">Видалити дані старші за:</label>
+                        <select id="cleanupPeriod" class="cleanup-select">
+                            <option value="90">90 днів</option>
+                            <option value="180" selected>6 місяців</option>
+                            <option value="365">1 рік</option>
+                        </select>
+                    </div>
+                    <button id="cleanupBtn" class="btn btn-danger">🗑 Очистити старі дані</button>
+                    <div id="cleanupResult" class="cleanup-result hidden"></div>
+                </div>
+            </section>
+
+            <!-- Кнопки збереження -->
+            <div class="admin-actions">
+                <button id="saveAllBtn" class="btn btn-primary btn-large">💾 Зберегти всі налаштування</button>
+                <button id="resetScheduleBtn" class="btn btn-warning">🔄 Скинути розклад до базового</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

@@ -16,7 +16,7 @@ body {
     background: white;
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 header {
@@ -39,6 +39,8 @@ header h1 {
 .controls {
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-grow: 1;
     gap: 12px;
     background: #f8f9fa;
     padding: 8px 12px;
@@ -56,8 +58,11 @@ header h1 {
 
 .header-right {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: stretch;
+    gap: 8px;
+    flex: 1 1 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .save-indicator {
@@ -68,12 +73,17 @@ header h1 {
 }
 
 .save-indicator.hidden {
-    display: none !important;
+    display: none;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 table {
@@ -82,7 +92,8 @@ table {
     margin-top: 10px;
 }
 
-th, td {
+th,
+td {
     border: 1px solid #dee2e6;
     padding: 14px;
     text-align: left;
@@ -96,6 +107,50 @@ th {
     text-transform: uppercase;
     font-size: 0.85em;
     letter-spacing: 0.5px;
+}
+
+/* Оголошення */
+.announcement-block {
+    background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+    border: 1px solid #ffc107;
+    border-left: 4px solid #ff9800;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+}
+
+.announcement-header {
+    font-weight: 700;
+    color: #e65100;
+    font-size: 0.95em;
+    margin-bottom: 8px;
+}
+
+.announcement-text {
+    color: #5d4037;
+    font-size: 0.95em;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.announcement-textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 10px;
+    border: 1px solid #ffcc80;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+    background: #fffde7;
+    color: #333;
+}
+
+.announcement-textarea:focus {
+    outline: none;
+    border-color: #ff9800;
+    box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2);
 }
 
 .today-row {
@@ -113,11 +168,49 @@ th {
     border-bottom: 1px solid #e9ecef;
 }
 
+/* Lessons container for drag & drop */
+.lessons-container {
+    min-height: 20px;
+}
+
 .lesson-item {
     display: flex;
     align-items: center;
     gap: 5px;
     margin-bottom: 6px;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background 0.15s, box-shadow 0.15s;
+}
+
+/* Кнопки переміщення уроків */
+.move-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.move-btn {
+    background: #e9ecef;
+    border: 1px solid #dee2e6;
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 9px;
+    line-height: 14px;
+    cursor: pointer;
+    color: #495057;
+    transition: all 0.15s;
+}
+
+.move-btn:hover:not(:disabled) {
+    background: #4a90e2;
+    color: white;
+    border-color: #4a90e2;
+}
+
+.move-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
 }
 
 .lesson-item input {
@@ -140,8 +233,39 @@ th {
     background: #c82333;
 }
 
+.homework-edit-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.homework-edit-row textarea {
+    flex: 1;
+}
+
+.transfer-btn {
+    white-space: nowrap;
+    margin-top: 0;
+    padding: 6px 10px;
+    background: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.transfer-btn:hover {
+    background: #f57c00;
+    transform: translateY(-1px);
+}
+
 /* Елементи форми */
-input[type="text"], textarea {
+input[type="text"],
+input[type="password"],
+textarea {
     width: 100%;
     padding: 8px;
     margin-bottom: 6px;
@@ -152,7 +276,9 @@ input[type="text"], textarea {
     transition: border-color 0.2s;
 }
 
-input[type="text"]:focus, textarea:focus {
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus {
     outline: none;
     border-color: #4a90e2;
     box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
@@ -195,12 +321,40 @@ button {
     background: #28a745;
     color: white;
     box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+    padding: 8px 14px;
+    font-size: 13px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .edit-btn:hover {
     background: #218838;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.admin-link-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    background: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 13px;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+    white-space: nowrap;
+}
+
+.admin-link-btn:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
 }
 
 .edit-btn.logout {
@@ -213,13 +367,17 @@ button {
 }
 
 /* Модальне вікно */
+.hidden {
+    display: none !important;
+}
+
 .modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -227,17 +385,13 @@ button {
     animation: fadeIn 0.2s;
 }
 
-.modal.hidden {
-    display: none !important;
-}
-
 .modal-content {
     background: white;
     padding: 30px;
     border-radius: 10px;
     width: 90%;
-    max-width: 350px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    max-width: 400px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     animation: slideUp 0.3s;
 }
 
@@ -246,6 +400,7 @@ button {
         transform: translateY(20px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -258,7 +413,7 @@ button {
     text-align: center;
 }
 
-.modal input {
+.modal input[type="password"] {
     width: 100%;
     margin-bottom: 15px;
     padding: 12px;
@@ -271,6 +426,57 @@ button {
     display: flex;
     gap: 10px;
     margin-top: 20px;
+}
+
+/* Вибір ролі */
+.role-select {
+    margin-bottom: 18px;
+}
+
+.role-option {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.role-option:hover {
+    border-color: #4a90e2;
+    background: #f0f7ff;
+}
+
+.role-option input[type="radio"] {
+    width: auto;
+    margin: 0;
+}
+
+.role-option input[type="radio"]:checked~.role-label {
+    color: #4a90e2;
+    font-weight: 700;
+}
+
+.role-option:has(input:checked) {
+    border-color: #4a90e2;
+    background: #f0f7ff;
+}
+
+.role-label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 15px;
+}
+
+.role-option small {
+    width: 100%;
+    color: #6c757d;
+    font-size: 12px;
+    padding-left: 26px;
 }
 
 .primary-btn {
@@ -306,20 +512,6 @@ button {
     background: #138496;
 }
 
-.transfer-btn {
-    background: #ffc107;
-    color: #333;
-    font-size: 11px;
-    padding: 4px 8px;
-    white-space: nowrap;
-    font-weight: 600;
-    height: fit-content;
-}
-
-.transfer-btn:hover {
-    background: #ffb300;
-}
-
 .homework-item {
     margin-bottom: 12px;
     padding-bottom: 10px;
@@ -346,6 +538,97 @@ button {
 .homework-text.empty {
     color: #adb5bd;
     font-style: italic;
+}
+
+/* Кнопка "Сьогодні задали" */
+.today-hw-btn {
+    padding: 8px 14px;
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.today-hw-btn:hover {
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(230, 126, 34, 0.4);
+}
+
+/* Модалка "Сьогодні задали" */
+.today-modal-content {
+    max-width: 500px;
+    width: 90%;
+}
+
+.today-form-field {
+    margin-bottom: 14px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.today-field-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    gap: 8px;
+}
+
+.today-field-header strong {
+    color: #2c3e50;
+    font-size: 0.95em;
+}
+
+.today-field-target {
+    font-size: 0.8em;
+    color: #3498db;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.today-field-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 40px;
+    transition: border-color 0.2s;
+}
+
+.today-field-input:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.15);
+}
+
+.today-field-input:disabled {
+    background: #e9ecef;
+    cursor: not-allowed;
+}
+
+/* Footer */
+.school-footer {
+    text-align: center;
+    padding: 16px 0 4px;
+    margin-top: 20px;
+    border-top: 2px solid #f0f0f0;
+    color: #6c757d;
+    font-size: 0.9em;
+    font-weight: 500;
 }
 
 /* Адаптивність */
@@ -383,7 +666,8 @@ button {
         width: 100%;
     }
 
-    th, td {
+    th,
+    td {
         padding: 10px 8px;
         font-size: 14px;
     }
@@ -407,5 +691,41 @@ button {
         width: 100%;
         order: -1;
         margin-bottom: 8px;
+    }
+}
+
+/* Мобільна оптимізація редактора уроків */
+@media (max-width: 600px) {
+    .admin-link-btn .admin-text {
+        display: none;
+    }
+
+    .lesson-item {
+        gap: 3px;
+        padding: 2px;
+    }
+
+    .move-buttons {
+        gap: 0;
+        flex-shrink: 0;
+    }
+
+    .move-btn {
+        padding: 0 3px;
+        font-size: 7px;
+        line-height: 12px;
+        min-width: 16px;
+    }
+
+    .delete-lesson-btn {
+        padding: 3px 5px;
+        font-size: 10px;
+        flex-shrink: 0;
+    }
+
+    .lesson-item input {
+        font-size: 13px;
+        padding: 5px 4px;
+        min-width: 0;
     }
 }
